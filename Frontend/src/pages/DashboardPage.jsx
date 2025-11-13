@@ -5,7 +5,7 @@ import { useActiveSessions, useCreateSession, useMyRecentSessions } from "../hoo
 import Navbar from "../components/Navbar.jsx"
 import WelcomeSection from "../components/WelcomeSection.jsx"
 import StatsCards from "../components/StatsCards.jsx"
-import ActiveSessions from "./ActiveSessions.jsx"
+import ActiveSessions from "../components/ActiveSessions.jsx"
 import RecentSessions from "../components/RecentSessions.jsx"
 import CreateSessionModal from "../components/CreateSessionModal.jsx"
 
