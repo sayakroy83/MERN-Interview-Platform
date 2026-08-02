@@ -26,6 +26,11 @@ app.get('/health', (req, res)=> {
     res.status(200).json({msg: "API is up & running"})
 })
 
+app.get("/test", (req, res) => {
+    console.log("TEST ROUTE HIT");
+    res.json({ ok: true });
+});
+
 //app ready for deployment
 // if(ENV.NODE_ENV === 'production') {
 //     app.use(express.static(path.join(__dirname, "../Frontend/dist")))
