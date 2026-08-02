@@ -16,6 +16,11 @@ const __dirname = path.resolve()
 //middleware
 app.use(express.json())
 app.use(cors({origin:ENV.CLIENT_URL, credentials: true}))
+
+app.use((req,res,next)=>{
+    console.log(req.headers.cookie);
+    next();
+})
 app.use(clerkMiddleware()) //this adds a field to request object: req.auth()
 
 app.use('/api/inngest', serve({client:inngest, functions}))
