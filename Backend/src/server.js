@@ -17,7 +17,7 @@ const __dirname = path.resolve()
 app.use(express.json())
 app.use(cors({origin:ENV.CLIENT_URL, credentials: true}))
 
-app.use((req,res,next)=>{
+app.use((req,res,next)=>{ //added by chatgpt
     console.log(req.headers.cookie);
     next();
 })
