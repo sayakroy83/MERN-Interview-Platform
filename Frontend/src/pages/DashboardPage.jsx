@@ -8,6 +8,15 @@ import StatsCards from "../components/StatsCards.jsx"
 import ActiveSessions from "../components/ActiveSessions.jsx"
 import RecentSessions from "../components/RecentSessions.jsx"
 import CreateSessionModal from "../components/CreateSessionModal.jsx"
+import { useAuth } from "@clerk/clerk-react"; //added by chatgpt
+
+const { getToken } = useAuth();
+
+console.log("Testing Clerk token...");
+
+getToken().then(token => {
+  console.log("TOKEN:", token);
+});
 
 function DashboardPage() {
   const navigate = useNavigate()
