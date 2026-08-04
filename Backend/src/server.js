@@ -13,9 +13,6 @@ const app = express()
 
 const __dirname = path.resolve()
 
-console.log("SECRET =", process.env.CLERK_SECRET_KEY ? "FOUND" : "MISSING");
-console.log("PUBLISHABLE =", process.env.CLERK_PUBLISHABLE_KEY ? "FOUND" : "MISSING");
-
 //middleware
 app.use(express.json())
 app.use(cors({origin:ENV.CLIENT_URL, credentials: true}))
@@ -25,6 +22,16 @@ app.use((req,res,next)=>{ //added by chatgpt
     next();
 })
 app.use(clerkMiddleware()) //this adds a field to request object: req.auth()
+
+app.use((req, res, next) => { //added by chatgpt
+  console.log("\n========== INCOMING REQUEST ==========");
+  console.log(req.method, req.originalUrl);
+  console.log("Origin:", req.headers.origin);
+  console.log("Cookie:", req.headers.cookie || "No cookies");
+  console.log("Authorization:", req.headers.authorization || "No Authorization");
+  console.log("======================================\n");
+  next();
+});
 
 app.use('/api/inngest', serve({client:inngest, functions}))
 app.use('/api/chat', chatRoutes)
