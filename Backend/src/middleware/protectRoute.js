@@ -2,70 +2,51 @@ import { requireAuth } from "@clerk/express";
 import User from "../models/User.js";
 
 export const protectRoute = [
+  (req, res, next) => {
+    console.log(">>> protectRoute START");
+    next();
+  },
+
   requireAuth(),
 
   async (req, res, next) => {
+    console.log(">>> AFTER requireAuth");
+
     try {
-      console.log("\n========== AUTH DEBUG ==========");
-
-      console.log("\nRequest URL:");
-      console.log(req.method, req.originalUrl);
-
-      console.log("\nCookies:");
-      console.log(req.headers.cookie || "No cookies");
-
-      console.log("\nAuthorization Header:");
-      console.log(req.headers.authorization || "No Authorization header");
-
-      console.log("\nreq.auth():");
-      console.dir(req.auth(), { depth: null });
-
       const auth = req.auth();
 
-      console.log("\nAuthentication Status:");
-      console.log("isAuthenticated:", auth?.isAuthenticated);
-      console.log("userId:", auth?.userId);
-      console.log("sessionId:", auth?.sessionId);
-      console.log("sessionStatus:", auth?.sessionStatus);
-      console.log("tokenType:", auth?.tokenType);
+      console.log("AUTH OBJECT:");
+      console.log(auth);
 
-      const clerkId = auth?.userId;
+      console.log("USER ID:", auth?.userId);
 
-      if (!clerkId) {
-        console.log("\n❌ No Clerk userId found.");
+      if (!auth?.userId) {
         return res.status(401).json({
-          success: false,
-          message: "Authentication failed",
-          auth,
+          message: "No userId returned by Clerk",
         });
       }
 
-      console.log("\nLooking up Mongo user...");
-      const user = await User.findOne({ clerkId });
+      const user = await User.findOne({
+        clerkId: auth.userId,
+      });
 
-      console.log("Mongo User:");
-      console.dir(user, { depth: null });
+      console.log("Mongo user:", user);
 
       if (!user) {
-        console.log("❌ Mongo user not found");
         return res.status(404).json({
-          success: false,
-          message: "User not found",
+          message: "Mongo user not found",
         });
       }
 
-      console.log("✅ Authentication successful");
-      console.log("===============================\n");
-
       req.user = user;
-      next();
 
-    } catch (error) {
-      console.error("\n🔥 protectRoute Error:");
-      console.error(error);
+      next();
+    } catch (err) {
+      console.error("protectRoute error");
+      console.error(err);
+
       res.status(500).json({
-        success: false,
-        message: error.message,
+        message: err.message,
       });
     }
   },
