@@ -10,14 +10,6 @@ import RecentSessions from "../components/RecentSessions.jsx"
 import CreateSessionModal from "../components/CreateSessionModal.jsx"
 import { useAuth } from "@clerk/clerk-react"; //added by chatgpt
 
-const { getToken } = useAuth();
-
-console.log("Testing Clerk token...");
-
-getToken().then(token => {
-  console.log("TOKEN:", token);
-});
-
 function DashboardPage() {
   const navigate = useNavigate()
   const {user} = useUser()
@@ -27,6 +19,14 @@ function DashboardPage() {
   const createSessionMutation = useCreateSession()
   const {data:activeSessionsData, isLoading:loadingActiveSessions} = useActiveSessions()
   const {data:recentSessionsData, isLoading:loadingRecentSessions } = useMyRecentSessions()
+
+  const { getToken } = useAuth(); //added by chatgpt
+
+  console.log("Testing Clerk token...");
+
+  getToken().then(token => {
+    console.log("TOKEN:", token);
+  });
 
   const handleCreateRoom = ()=> {
     if(!roomConfig.problem || !roomConfig.difficulty) return;
