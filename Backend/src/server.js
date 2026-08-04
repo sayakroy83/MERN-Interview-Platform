@@ -13,6 +13,9 @@ const app = express()
 
 const __dirname = path.resolve()
 
+console.log("SECRET =", process.env.CLERK_SECRET_KEY ? "FOUND" : "MISSING");
+console.log("PUBLISHABLE =", process.env.CLERK_PUBLISHABLE_KEY ? "FOUND" : "MISSING");
+
 //middleware
 app.use(express.json())
 app.use(cors({origin:ENV.CLIENT_URL, credentials: true}))
